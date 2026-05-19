@@ -68,6 +68,13 @@ check_ssh_sessions() {
     echo "$ssh_count"
 }
 
+# Serialize concurrent controller invocations
+exec 9>"$LOCK_FILE"
+if ! flock -w 2 9; then
+    echo "Could not acquire lock — another instance is running" >&2
+    exit 1
+fi
+
 # Main control logic
 case "$1" in
     sleep)
