@@ -18,37 +18,37 @@ MODE_ACTIVE="active"
 
 # Function to set LED to sleep mode (dim)
 set_sleep_mode() {
-    echo "Setting LEDs to sleep mode (dim)"
-    
-    # Set power LED to very dim (heartbeat pattern at low brightness)
+    echo "Setting LEDs to sleep mode"
+
     if [ -f "$PWR_TRIGGER" ]; then
-        echo "timer" > "$PWR_TRIGGER"
-        echo 50 > /sys/class/leds/PWR/delay_on
-        echo 2950 > /sys/class/leds/PWR/delay_off
+        echo "heartbeat" > "$PWR_TRIGGER"
     fi
-    
-    # Set activity LED to minimal activity (only on disk access)
+
     if [ -f "$ACT_TRIGGER" ]; then
         echo "mmc0" > "$ACT_TRIGGER"
     fi
-    
+
+    clusterhat led off 2>/dev/null || true
+    clusterhat act off 2>/dev/null || true
+
     echo "$MODE_SLEEP" > "$STATE_FILE"
 }
 
 # Function to set LED to active mode (bright)
 set_active_mode() {
-    echo "Setting LEDs to active mode (bright)"
-    
-    # Set power LED to solid on
+    echo "Setting LEDs to active mode"
+
     if [ -f "$PWR_TRIGGER" ]; then
         echo "default-on" > "$PWR_TRIGGER"
     fi
-    
-    # Set activity LED to show all activity
+
     if [ -f "$ACT_TRIGGER" ]; then
         echo "mmc0" > "$ACT_TRIGGER"
     fi
-    
+
+    clusterhat led on 2>/dev/null || true
+    clusterhat act on 2>/dev/null || true
+
     echo "$MODE_ACTIVE" > "$STATE_FILE"
 }
 

@@ -23,9 +23,15 @@ Bash scripts for Raspberry Pi 4 LED control with Cluster HAT - no build system, 
 - This catches SSH sessions but may miss other remote connections
 
 ### LED Trigger Modes
-- `timer` trigger requires both `delay_on` and `delay_off` files (not just brightness)
-- Must set trigger BEFORE setting delay values, not after
+- `heartbeat` trigger drives the PWR LED pulse in sleep mode — no delay files needed
+- `timer` trigger (not currently used) requires both `delay_on` and `delay_off` files; must set trigger before delay values
 - `mmc0` trigger is SD card activity (not `mmc` or `disk`)
+
+### Cluster HAT Integration
+- `clusterhat led on/off` controls the orange indicator LEDs on the HAT board
+- `clusterhat act on/off` controls the green ACT LEDs on the Pi Zero boards (requires ClusterCTRL device — CBRIDGE qualifies)
+- Both commands use `2>/dev/null || true` so failures don't interrupt Pi 4 LED transitions
+- These only run on mode transitions, not every poll cycle
 
 ### Service Behavior
 - Service runs `pi-led-monitor.sh`, NOT `pi-led-controller.sh` directly
@@ -51,5 +57,4 @@ sudo journalctl -u pi-led-controller.service -f
 
 ## Customization Points
 - `CHECK_INTERVAL=5` in pi-led-monitor.sh (SSH check frequency)
-- `delay_on=50` and `delay_off=2950` in pi-led-controller.sh (heartbeat timing)
-- Both trigger modes in `set_sleep_mode()` and `set_active_mode()` functions
+- `set_sleep_mode()` and `set_active_mode()` in pi-led-controller.sh (LED trigger logic and Cluster HAT commands)
