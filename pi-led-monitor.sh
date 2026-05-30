@@ -28,4 +28,3 @@ while true; do
     sleep $CHECK_INTERVAL
 done
 
-# Made with Bob
