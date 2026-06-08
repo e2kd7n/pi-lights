@@ -70,6 +70,27 @@ sudo /usr/local/bin/pi-led-controller.sh active
 # LEDs should dim again within 5 seconds
 ```
 
+## Stopping and Disabling the Service
+
+To turn off the LED controller and prevent it from starting on reboot:
+
+```bash
+# Stop the service immediately
+sudo systemctl stop pi-led-controller.service
+
+# Disable the service from starting on boot
+sudo systemctl disable pi-led-controller.service
+
+# Reset LEDs to default behavior (optional)
+echo "default-on" | sudo tee /sys/class/leds/PWR/trigger
+echo "mmc0" | sudo tee /sys/class/leds/ACT/trigger
+```
+
+To verify the service is disabled:
+```bash
+sudo systemctl status pi-led-controller.service
+```
+
 ## Customization
 
 See [INSTALL.md](INSTALL.md) for detailed customization options including:
