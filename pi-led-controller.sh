@@ -28,8 +28,10 @@ set_sleep_mode() {
         echo "mmc0" > "$ACT_TRIGGER"
     fi
 
-    clusterhat led off 2>/dev/null || true
-    clusterhat act off 2>/dev/null || true
+    # Cluster HAT v2.x LED control (orange LED on HAT board)
+    clusterctrl led off 2>/dev/null || true
+    # Turn off ALERT LED
+    clusterctrl alert off 2>/dev/null || true
 
     echo "$MODE_SLEEP" > "$STATE_FILE"
 }
@@ -46,8 +48,10 @@ set_active_mode() {
         echo "mmc0" > "$ACT_TRIGGER"
     fi
 
-    clusterhat led on 2>/dev/null || true
-    clusterhat act on 2>/dev/null || true
+    # Cluster HAT v2.x LED control (orange LED on HAT board)
+    clusterctrl led on 2>/dev/null || true
+    # Turn on ALERT LED
+    clusterctrl alert on 2>/dev/null || true
 
     echo "$MODE_ACTIVE" > "$STATE_FILE"
 }

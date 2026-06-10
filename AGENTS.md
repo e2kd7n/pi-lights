@@ -28,10 +28,12 @@ Bash scripts for Raspberry Pi 4 LED control with Cluster HAT - no build system, 
 - `mmc0` trigger is SD card activity (not `mmc` or `disk`)
 
 ### Cluster HAT Integration
-- `clusterhat led on/off` controls the orange indicator LEDs on the HAT board
-- `clusterhat act on/off` controls the green ACT LEDs on the Pi Zero boards (requires ClusterCTRL device — CBRIDGE qualifies)
+- Cluster HAT v2.x uses `clusterctrl` command (NOT `clusterhat`)
+- `clusterctrl led on/off` controls the orange Power LED on the HAT board (P1-P4)
+- `clusterctrl alert on/off` controls the ALERT LED on the HAT board
 - Both commands use `2>/dev/null || true` so failures don't interrupt Pi 4 LED transitions
 - These only run on mode transitions, not every poll cycle
+- Requires ClusterCTRL device at `/dev/ClusterCTRL` (I²C expander)
 
 ### Service Behavior
 - Service runs `pi-led-monitor.sh`, NOT `pi-led-controller.sh` directly
